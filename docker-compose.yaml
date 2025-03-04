@@ -17,6 +17,7 @@ services:
     image: mustafa3li/project:latest
     container_name: django_app
     restart: always
+    pull_policy: always
     depends_on:
       - db
     environment:
