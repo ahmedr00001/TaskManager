@@ -1,0 +1,23 @@
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore environment files
+.env
+.venv/
+venv/
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+
+# Ignore IDE/editor configurations
+.vscode/
+.idea/
+
+# Ignore static and media files (optional, if using volume mounts instead)
+staticfiles/
+media/
