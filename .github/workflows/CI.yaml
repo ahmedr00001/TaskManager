@@ -44,22 +44,20 @@ jobs:
 
       - name: Set up Docker
         run: |
-          # Remove any conflicting containerd packages
           sudo apt-get remove -y containerd.io containerd runc || true
-          # Install Docker using the official convenience script
           curl -fsSL https://get.docker.com -o get-docker.sh
           sudo sh get-docker.sh
-          # Install Docker Compose
           sudo apt-get update
           sudo apt-get install -y docker-compose
 
       - name: Build and start Docker Compose services
+        env:
+          DB_ROOT_PASSWORD: ${{ secrets.DB_ROOT_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_PORT: "3306"
         run: |
-          echo "DB_ROOT_PASSWORD=${{ secrets.DB_ROOT_PASSWORD }}" >> .env
-          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
-          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-          echo "DB_PORT=3306" >> .env
           docker-compose up -d --build
 
       - name: Wait for MySQL to be ready
@@ -98,7 +96,6 @@ jobs:
       - name: Get latest version from Docker Hub and increment it
         id: version
         run: |
-          # Fetch all tags from Docker Hub
           latest_version=$(curl -s https://hub.docker.com/v2/repositories/mustafa3li/project/tags | jq -r '.results[].name' | grep -E '^version_[0-9]+$' | sort -V | tail -n1)
           if [[ -z "$latest_version" ]]; then
             new_version="version_1"
