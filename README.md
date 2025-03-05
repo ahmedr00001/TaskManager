@@ -84,13 +84,13 @@ Includes:
 1. Title: Task name.
 2. Description: Task details.
 3. Priority: Low, Medium, High.
-4. Status: Completed, In Progress, Delayed.
+4. Status: Completed, In Progress and Delayed.
 5. Due Date: Task deadline.
 
 ## Planned Features
 
 1. **Notifications**: Alert users about upcoming task deadlines.
 
-2. **automatic Task Assignment**: The system will automatically assign tasks to employees based on predefined criteria
+2. **automatic Task Assignment**: The system will automatically assign tasks to employees based on predefined criteria.
 
 3. **Enhanced User UI**
