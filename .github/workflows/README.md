@@ -52,4 +52,4 @@ act -W .github/workflows/CI.yaml
 ![Image](https://github.com/user-attachments/assets/407e1830-ecd2-4692-b0b4-4452f023f89d)
 
 - Image is pushed
-  ![Image](https://github.com/user-attachments/assets/9f87cd72-88b0-49ba-9387-44dd62726fa9)
+  ![Image](https://github.com/user-attachments/assets/1a9c8f25-87c0-44e8-88c9-e732cc9cfaa1)
