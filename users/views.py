@@ -39,6 +39,7 @@ def register(request):
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
+        category = request.POST.get('category')
         phone_number = request.POST.get('phone_number')
         birthday = request.POST.get('birthday')
         role = request.POST.get('role')
@@ -61,6 +62,7 @@ def register(request):
         user = User(
             first_name=first_name,
             last_name=last_name,
+            category = category,
             email=email,
             phone_number=phone_number,
             birthday=birthday,
