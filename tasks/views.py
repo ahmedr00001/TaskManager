@@ -2,6 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Task
 from users.models import User
 from django.contrib import messages
+from datetime import datetime
+from django.db.models import Count
+from django.db.models import Q  
+
+
 
 
 #task list for filters
@@ -21,8 +26,6 @@ def task_list(request, filter_type=None):
         template_name = 'tasks/employee_tasks.html'
 
     return render(request, template_name, {"tasks": tasks})
-
-
 
 # View tasks of the logged-in employee
 def employee_tasks(request):
@@ -45,28 +48,39 @@ def add_task(request):
     if request.method == 'POST':
         title = request.POST.get('title', '').strip()
         description = request.POST.get('description', '').strip()
-        assigned_to_id = request.POST.get('assigned_to')
-        priority = request.POST.get('priority', 'medium')  # Default to medium if not provided
+        priority = request.POST.get('priority', 'medium')
+        deadline = request.POST.get('deadline')
+        category = request.POST.get('category', '').strip()  # ✅ Fetch category from request
 
-        if not title or not description or not assigned_to_id:
-            messages.error(request, "All fields are required.")
+        # Ensure category is provided
+        if not category:
+            messages.error(request, "Category is required.")
             return redirect('tasks:manager_tasks')
 
-        if priority not in ['low', 'medium', 'high', 'urgent']:
-            messages.error(request, "Invalid priority level.")
+        # Find an available employee in the same category
+        suitable_employee = User.objects.filter(role='employee', category=category) \
+                                        .annotate(task_count=Count('task', filter=~Q(task__status='completed'))) \
+                                        .order_by('task_count') \
+                                        .first()   #~Q used retunt not complate task , annonate used to make count to all user 
+                                                    # first used to return only  the first user on list which is order by num of tasks
+
+        if not suitable_employee:
+            messages.error(request, "No available employees in this category.")
             return redirect('tasks:manager_tasks')
 
-        assigned_to = get_object_or_404(User, id=assigned_to_id, role='employee')
-
+        # Create the task and assign it to the employee
         Task.objects.create(
             title=title,
             description=description,
-            assigned_to=assigned_to,
-            priority=priority
+            priority=priority,
+            deadline=deadline,
+            category=category,  # ✅ Save category
+            assigned_to=suitable_employee  # ✅ Assign employee
         )
         messages.success(request, "Task added successfully.")
 
     return redirect('tasks:manager_tasks')
+
 
 #manager update task
 def update_task(request, task_id):
@@ -80,6 +94,7 @@ def update_task(request, task_id):
         description = request.POST.get('description')
         priority = request.POST.get('priority')
         status = request.POST.get('status')
+        deadline = request.POST.get('deadline')
 
         if title:
             task.title = title
@@ -89,6 +104,8 @@ def update_task(request, task_id):
             task.priority = priority
         if status in ['pending', 'in_progress', 'completed', 'delayed']:
             task.status = status
+        if deadline:
+                task.deadline = deadline
 
         task.save()
         messages.success(request, "Task updated successfully.")
@@ -144,6 +161,9 @@ def manager_tasks(request):
     # Fetch all tasks from the database
     tasks = Task.objects.all()
 
+    # Fetch unique categories from the Task model
+    categories = User.objects.values_list('category', flat=True).distinct()  #pass category to manager page
+
     # Fetch all employees (users with the role 'employee')
     employees = User.objects.filter(role='employee')
 
@@ -176,4 +196,5 @@ def manager_tasks(request):
         'tasks': tasks,
         'employees': employees,
         'employee_data': employee_data,  # Pass employee data to the template
+        'categories': categories ,
 })

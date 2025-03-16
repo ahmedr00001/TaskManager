@@ -14,7 +14,9 @@ class User(models.Model):
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     birthday = models.DateField(blank=True, null=True)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='employee')  
-    password = models.CharField(max_length=255, blank=False ,null=True)  
+    password = models.CharField(max_length=255, blank=False ,null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

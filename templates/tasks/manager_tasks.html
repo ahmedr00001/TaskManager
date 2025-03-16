@@ -58,6 +58,7 @@
                 <li><a href="#" onclick="filterTasks('completed')"><i class="fas fa-check-circle"></i> Completed</a></li>
                 <li><a href="#" onclick="filterTasks('delayed')"><i class="fas fa-clock"></i> Delayed</a></li>
                 <li><a href="#" onclick="filterTasks('in_progress')"><i class="fas fa-cogs"></i> In Progress</a></li>
+                <li><a href="#" onclick="filterTasks('Pending')"><i class="fas fa-cogs"></i> Pending</a></li>
             </ul>
             <button class="add-task-btn" onclick="showTaskForm()"><i class="fas fa-plus"></i> Add Task</button>
             <a href="{% url 'tasks:log_out' %}" class="logout-btn" style="text-decoration: none;">
@@ -70,48 +71,44 @@
             <h1>📌 Task Management</h1>
 
             <!-- Task Form (Initially Hidden) -->
-<div id="taskForm" class="task-form" style="display: none;">
-    <h3>➕ Add New Task</h3>
-    <form method="POST" action="{% url 'tasks:add_task' %}">
-        {% csrf_token %}
-        <label>👤 Employee:</label>
-        <select name="assigned_to">
-            {% for employee in employees %}
-                <option value="{{ employee.id }}">{{ employee.first_name }} {{ employee.last_name }}</option>
-            {% endfor %}
-        </select>
-
-        <label>✍️ Task Name:</label>
-        <input type="text" name="title" placeholder="Enter task name" required>
-
-        <label>📝 Task Description:</label>
-        <textarea name="description" placeholder="Enter task description"></textarea>
-
-        <label>🔥 Priority:</label>
-        <select name="priority">
-            <option value="low">🟢 Low</option>
-            <option value="medium">🟠 Medium</option>
-            <option value="high">🔴 High</option>
-            <option value="urgent">🚨 Urgent</option>
-        </select>
-
-        <label>📌 Status:</label>
-        <select name="status">
-            <option value="pending">⏳ Pending</option>
-            <option value="in_progress">⚙️ In Progress</option>
-            <option value="completed">✅ Completed</option>
-        </select>
-
-        <!-- Add Due Date Field -->
-        <label>⏰ Due Date:</label>
-        <input type="datetime-local" name="due_date" required>
-
-        <div class="form-buttons">
-            <button type="submit"><i class="fas fa-check"></i> Add</button>
-            <button type="button" onclick="hideTaskForm()"><i class="fas fa-times"></i> Cancel</button>
-        </div>
-    </form>
-</div>
+            <div id="taskForm" class="task-form" style="display: none;">
+                <h3>➕ Add New Task</h3>
+                <form method="POST" action="{% url 'tasks:add_task' %}">
+                    {% csrf_token %}
+            
+                    <!-- Task Category Dropdown -->
+                    <label>📂 Task Category:</label>
+                    <select name="category" required>
+                        {% for category in categories %}
+                            <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+            
+                    <label>✍️ Task Name:</label>
+                    <input type="text" name="title" placeholder="Enter task name" required>
+            
+                    <label>📝 Task Description:</label>
+                    <textarea name="description" placeholder="Enter task description"></textarea>
+            
+                    <label>🔥 Priority:</label>
+                    <select name="priority">
+                        <option value="low">🟢 Low</option>
+                        <option value="medium">🟠 Medium</option>
+                        <option value="high">🔴 High</option>
+                        <option value="urgent">🚨 Urgent</option>
+                    </select>
+            
+                    <!-- Add deadline Field -->
+                    <label>⏰ Deadline:</label>
+                    <input type="datetime-local" name="deadline" required>
+            
+                    <div class="form-buttons">
+                        <button type="submit"><i class="fas fa-check"></i> Add</button>
+                        <button type="button" onclick="hideTaskForm()"><i class="fas fa-times"></i> Cancel</button>
+                    </div>
+                </form>
+            </div>
+            
 
             <!-- Tasks Banner -->
 <div class="tasks-banner">
@@ -125,6 +122,9 @@
                     <p><strong>Assigned to:</strong> {{ task.assigned_to.first_name }} {{ task.assigned_to.last_name }}</p>
                     <p><strong>Priority:</strong> {{ task.get_priority_display }}</p>
                     <p><strong>Status:</strong> {{ task.get_status_display }}</p>
+                    <p><strong>Created At:</strong> {{ task.created_at }}</p>
+                    <p><strong>Deadline:</strong> <span id="deadline-{{ task.id }}">{{ task.deadline }}</span></p>
+                    <p><strong>Time Remaining:</strong> <span id="countdown-{{ task.id }}"></span></p>
     
                     <!-- Update Task Button -->
                     <button class="update-task-btn" onclick="showUpdateTaskForm('{{ task.id }}', '{{ task.title }}', '{{ task.description }}', '{{ task.priority }}', '{{ task.status }}')">
@@ -193,9 +193,9 @@
             <option value="completed">✅ Completed</option>
         </select>
 
-        <!-- Add Due Date Field -->
-        <label>⏰ Due Date:</label>
-        <input type="datetime-local" name="due_date" id="updateTaskDueDate" required>
+        <!-- Add deadline Field -->
+        <label>⏰ deadline:</label>
+        <input type="datetime-local" name="deadline" id="updateTaskdeadline" required>
 
         <div class="form-buttons">
             <button type="submit"><i class="fas fa-save"></i> Save</button>
@@ -224,7 +224,7 @@
         function showTaskForm() { document.getElementById("taskForm").style.display = "block"; }
         function hideTaskForm() { document.getElementById("taskForm").style.display = "none"; }
 
-function showUpdateTaskForm(taskId, title, description, priority, status, dueDate) {
+function showUpdateTaskForm(taskId, title, description, priority, status, deadline) {
     document.getElementById("updateTaskForm").style.display = "block";
     document.getElementById("updateTaskId").value = taskId;
     document.getElementById("updateTaskTitle").value = title;
@@ -232,9 +232,7 @@ function showUpdateTaskForm(taskId, title, description, priority, status, dueDat
     document.getElementById("updateTaskPriority").value = priority;
     document.getElementById("updateTaskStatus").value = status;
 
-    // Set Due Date value
-    const dueDateInput = document.getElementById("updateTaskDueDate");
-    dueDateInput.value = dueDate; // Ensure dueDate is in the correct format (YYYY-MM-DDTHH:MM)
+    
 
     // Dynamically set the form action URL
     document.getElementById("updateTaskFormElement").action = `{% url 'tasks:update_task' 0 %}`.replace("0", taskId);
