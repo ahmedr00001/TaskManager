@@ -50,7 +50,7 @@ def add_task(request):
         description = request.POST.get('description', '').strip()
         priority = request.POST.get('priority', 'medium')
         deadline = request.POST.get('deadline')
-        category = request.POST.get('category', '').strip()  # ✅ Fetch category from request
+        category = request.POST.get('category', '').strip()
 
         # Ensure category is provided
         if not category:
@@ -61,8 +61,7 @@ def add_task(request):
         suitable_employee = User.objects.filter(role='employee', category=category) \
                                         .annotate(task_count=Count('task', filter=~Q(task__status='completed'))) \
                                         .order_by('task_count') \
-                                        .first()   #~Q used retunt not complate task , annonate used to make count to all user 
-                                                    # first used to return only  the first user on list which is order by num of tasks
+                                        .first()
 
         if not suitable_employee:
             messages.error(request, "No available employees in this category.")
@@ -74,10 +73,11 @@ def add_task(request):
             description=description,
             priority=priority,
             deadline=deadline,
-            category=category,  # ✅ Save category
-            assigned_to=suitable_employee  # ✅ Assign employee
+            category=category,
+            assigned_to=suitable_employee
         )
         messages.success(request, "Task added successfully.")
+        return redirect('tasks:manager_tasks')
 
     return redirect('tasks:manager_tasks')
 
