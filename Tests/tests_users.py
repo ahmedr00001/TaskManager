@@ -2,8 +2,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
 from django.contrib.auth.hashers import make_password
-from users.models import User
-from tasks.models import Task
+from .models import User
 
 class UserViewsTests(TestCase):
     def setUp(self):
