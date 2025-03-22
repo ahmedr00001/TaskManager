@@ -1,5 +1,4 @@
 {% load static %} 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +7,6 @@
     <title>Sign Up</title>
     <link rel="stylesheet" href="{% static 'css/registerstyle.css' %}">
     <link rel="icon" type="image/x-icon" href="{% static 'imgs/fav.png' %}">
-
 </head>
 <body>
     <div class="messages">
@@ -22,6 +20,11 @@
 
     <div class="outer-border"> 
         <div class="container">
+            <!-- Image Section -->
+            <div class="image-section">
+                <img src="{% static 'imgs/image_register/9784103.jpg' %}" alt="Sign Up Illustration">
+            </div>
+
             <!-- Signup Section -->
             <div class="signup-container">
                 <div class="signup-box">
@@ -30,44 +33,49 @@
                     <form method="POST">
                         {% csrf_token %}
                         
-                        <label for="first-name">First Name:</label>
-                        <input type="text" id="name" name="first_name" required>
+                        <!-- First Name -->
+                        <label for="first_name">First Name:</label>
+                        <input type="text" id="first_name" name="first_name" required>
             
+                        <!-- Last Name -->
                         <label for="last_name">Last Name:</label>
                         <input type="text" id="last_name" name="last_name" required>
                         
+                        <!-- Category -->
                         <label for="category">Category:</label>
                         <input type="text" id="category" name="category" required>
             
+                        <!-- Email -->
                         <label for="email">Email:</label>
                         <input type="email" id="email" name="email" required>
             
+                        <!-- Phone Number -->
                         <label for="phone_number">Phone Number:</label>
                         <input type="text" id="phone_number" name="phone_number">
             
+                        <!-- Birthday -->
                         <label for="birthday">Birthday:</label>
                         <input type="date" id="birthday" name="birthday">
             
+                        <!-- Role -->
                         <label for="role">Role:</label>
                         <select id="role" name="role">
                             <option value="manager">Manager</option>
                             <option value="employee">Employee</option>
                         </select>
             
+                        <!-- Password -->
                         <label for="password">Password:</label>
                         <input type="password" id="password" name="password" required>
             
+                        <!-- Confirm Password -->
                         <label for="confirm_password">Confirm Password:</label>
                         <input type="password" id="confirm_password" name="confirm_password" required>
             
+                        <!-- Submit Button -->
                         <button type="submit">Register</button>
                     </form>
                 </div>
-            </div>
-
-            <!-- Image Section -->
-            <div class="image-section">
-                <img src="{% static 'imgs/image_register/9784103.jpg' %}" alt="Sign Up Illustration">
             </div>
         </div>
     </div>
@@ -90,5 +98,3 @@
     </script>
 </body>
 </html>
-
-

@@ -80,11 +80,3 @@ function displayTasks(filter) {
 function filterTasks(status) {
     displayTasks(status);
 }
-
-// Logout Function
-function logout() {
-    const confirmLogout = confirm("Are you sure you want to logout?");
-    if (confirmLogout) {
-        window.location.href = "../index.html";
-    }
-}

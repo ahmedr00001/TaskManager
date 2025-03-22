@@ -101,17 +101,6 @@ function filterTasks(status) {
     }
 }
 
-// Logout Function with Confirmation
-function logout() {
-    // Show confirmation message
-    const confirmLogout = confirm("Are you sure you want to logout?");
-    
-    // If user confirms, redirect to homepage
-    if (confirmLogout) {
-        window.location.href = "../index.html"; // Replace with your homepage URL
-    }
-    // If user cancels, do nothing
-}
 
 
 

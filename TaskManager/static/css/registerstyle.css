@@ -161,6 +161,7 @@ button:hover {
     max-width: 400px;
     position: relative;
 }
+
 .alert button {
     background: none;
     border: none;
@@ -169,13 +170,14 @@ button:hover {
     cursor: pointer;
     margin-left: 10px;
     padding: 0;
-    opacity: 1; 
-    z-index: 1; 
+    opacity: 1;
+    z-index: 1;
 }
 
 .alert button:hover {
     opacity: 0.8;
 }
+
 .alert-danger {
     background-color: #ff4444;
     border: 1px solid #cc0000;
@@ -217,5 +219,91 @@ button:hover {
     to {
         opacity: 0;
         display: none;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; 
+        align-items: center;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .signup-container {
+        width: 100%;
+        padding: 40px;
+        order: 2; 
+    }
+
+    .image-section {
+        width: 100%;
+        padding: 20px;
+        order: 1; 
+    }
+
+    .image-section img {
+        border-radius: 8px;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+    }
+
+    .login-text {
+        font-size: 13px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="tel"],
+    input[type="date"],
+    select {
+        font-size: 13px;
+    }
+
+    button {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .outer-border {
+        padding: 20px;
+    }
+
+    .container {
+        border-radius: 10px;
+    }
+
+    .signup-container {
+        padding: 20px;
+    }
+
+    .image-section {
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 1.6rem;
+    }
+
+    .login-text {
+        font-size: 12px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="tel"],
+    input[type="date"],
+    select {
+        font-size: 12px;
+    }
+
+    button {
+        font-size: 13px;
     }
 }
