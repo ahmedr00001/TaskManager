@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
 from users.models import User
-from .models import Task
+from tasks.models import Task
 
 class TaskViewsTests(TestCase):
     def setUp(self):
