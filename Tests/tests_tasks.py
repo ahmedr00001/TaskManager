@@ -4,7 +4,7 @@ from django.contrib.messages import get_messages
 from django.utils import timezone
 from datetime import timedelta
 from users.models import User
-from .models import Task
+from tasks.models import Task
 
 class TaskViewsTests(TestCase):
     def setUp(self):
