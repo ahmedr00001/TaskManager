@@ -1,10 +1,10 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
+from django.utils import timezone
+from datetime import timedelta
 from users.models import User
-from tasks.models import Task
-from users.models import User
-
+from .models import Task
 
 class TaskViewsTests(TestCase):
     def setUp(self):
@@ -17,7 +17,8 @@ class TaskViewsTests(TestCase):
             last_name="User",
             email="manager@example.com",
             role="manager",
-            password="managerpassword"  # Unhashed password (for testing purposes only)
+            password="managerpassword",  # Unhashed password (for testing purposes only)
+            category="management"
         )
 
         # Create an employee user
@@ -26,7 +27,8 @@ class TaskViewsTests(TestCase):
             last_name="User",
             email="employee@example.com",
             role="employee",
-            password="employeepassword"  # Unhashed password (for testing purposes only)
+            password="employeepassword",  # Unhashed password (for testing purposes only)
+            category="development"
         )
 
         # Create a test task
@@ -34,8 +36,10 @@ class TaskViewsTests(TestCase):
             title="Test Task",
             description="This is a test task",
             assigned_to=self.employee,
-            status="pending",
-            priority="medium"
+            status="completed",
+            priority="medium",
+            deadline=timezone.now() + timedelta(days=7),  # Use timezone-aware datetime
+            category="development"
         )
 
         # Set up the test client
@@ -89,8 +93,9 @@ class TaskViewsTests(TestCase):
         data = {
             'title': 'New Task',
             'description': 'This is a new task',
-            'assigned_to': self.employee.id,
-            'priority': 'high'
+            'priority': 'high',
+            'deadline': (timezone.now() + timedelta(days=5)).strftime('%Y-%m-%dT%H:%M'),  # Valid deadline
+            'category': 'development'  # Valid category
         }
 
         # Send a POST request to add the task
@@ -162,6 +167,7 @@ class TaskViewsTests(TestCase):
         # Test filtering completed tasks
         response = self.client.get(reverse('tasks:task_list', kwargs={'filter_type': 'completed'}))
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Test Task")  # Ensure the task is displayed
 
         # Test filtering delayed tasks
         response = self.client.get(reverse('tasks:task_list', kwargs={'filter_type': 'delayed'}))
@@ -174,3 +180,17 @@ class TaskViewsTests(TestCase):
         # Test showing all tasks (no filter)
         response = self.client.get(reverse('tasks:task_list'))
         self.assertEqual(response.status_code, 200)
+    def test_update_task_view(self):
+        self._login_user(self.manager)
+        data = {
+            'title': 'Updated Task',
+            'description': 'Updated description',
+            'priority': 'urgent',
+            'status': 'in_progress',
+            'deadline': (timezone.now() + timedelta(days=3)).strftime('%Y-%m-%dT%H:%M')
+        }
+        response = self.client.post(reverse('tasks:update_task', args=[self.task.id]), data)
+        self.assertEqual(response.status_code, 302)
+        self.task.refresh_from_db()
+        self.assertEqual(self.task.title, 'Updated Task')
+        self.assertEqual(self.task.status, 'in_progress')
