@@ -234,3 +234,99 @@ button[type="submit"]:hover {
         transform: translateX(0);
     }
 }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; 
+        align-items: center;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .login-container {
+        width: 100%;
+        padding: 40px;
+        order: 2; 
+    }
+
+    .image-section {
+        width: 100%;
+        padding: 20px;
+        order: 1; 
+    }
+
+    .image-section img {
+        border-radius: 8px;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+    }
+
+    .signup-text {
+        font-size: 13px;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+        font-size: 13px;
+    }
+
+    button[type="submit"] {
+        font-size: 14px;
+    }
+
+    .google-btn,
+    .facebook-btn {
+        font-size: 13px;
+    }
+
+    .google-btn img,
+    .facebook-btn img {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        border-radius: 10px;
+    }
+
+    .login-container {
+        padding: 20px;
+    }
+
+    .image-section {
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 1.6rem;
+    }
+
+    .signup-text {
+        font-size: 12px;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+        font-size: 12px;
+    }
+
+    button[type="submit"] {
+        font-size: 13px;
+    }
+
+    .google-btn,
+    .facebook-btn {
+        font-size: 12px;
+    }
+
+    .google-btn img,
+    .facebook-btn img {
+        width: 16px;
+        height: 16px;
+    }
+}
