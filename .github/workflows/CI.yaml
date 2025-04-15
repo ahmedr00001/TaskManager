@@ -101,7 +101,7 @@ jobs:
         id: version
         run: |
           # Fetch all tags from Docker Hub
-          latest_version=$(curl -s https://hub.docker.com/v2/repositories/mustafa3li/project/tags | jq -r '.results[].name' | grep -E '^version_[0-9]+$' | sort -V | tail -n1)
+          latest_version=$(curl -s https://hub.docker.com/v2/repositories/mustafa3li/distritask/tags | jq -r '.results[].name' | grep -E '^version_[0-9]+$' | sort -V | tail -n1)
           if [[ -z "$latest_version" ]]; then
             new_version="version_1"
           else
