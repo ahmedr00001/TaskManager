@@ -113,7 +113,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build --no-cache -t mustafa3li/distritask:${{ env.NEW_VERSION }} .
+          docker build --no-cache -f Dockerfile.distritask -t mustafa3li/distritask:${{ env.NEW_VERSION }} .
 
       - name: Tag Docker image as latest
         run: |
