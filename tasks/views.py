@@ -7,25 +7,9 @@ from django.db.models import Count
 from django.db.models import Q  
 
 
+from celery import shared_task
+from .tasks import check_deadlines
 
-
-#task list for filters
-def task_list(request, filter_type=None):
-    if filter_type == "completed":
-        tasks = Task.objects.filter(status="completed")
-    elif filter_type == "delayed":
-        tasks = Task.objects.filter(status="delayed")
-    elif filter_type == "in_progress":
-        tasks = Task.objects.filter(status="in_progress")
-    else:
-        tasks = Task.objects.all()  # Default: Show all tasks
-
-    if request.session.get('user_role') == 'manager':
-        template_name = 'tasks/manager_tasks.html'
-    else:
-        template_name = 'tasks/employee_tasks.html'
-
-    return render(request, template_name, {"tasks": tasks})
 
 # View tasks of the logged-in employee
 def employee_tasks(request):
@@ -154,6 +138,9 @@ def log_out(request):
 
 # this function used in get employees in manger page and thier tasks
 def manager_tasks(request):
+
+    check_deadlines.delay()
+    
     # Check if the user is a manager; if not, redirect to the login page
     if request.session.get('user_role') != 'manager':
         return redirect('users:login')  
