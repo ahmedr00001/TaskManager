@@ -1,37 +1,26 @@
 services:
-  db:
-    image: mysql:8.0
-    container_name: mysql_db
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+  djangoserver:
+    container_name: backend
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
     ports:
-      - "${DB_PORT}:${DB_PORT}"
+      - "8000:8000"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - .:/app
+      - ./db.sqlite3:/app/db.sqlite3 # Mount the database file to the container
 
-  web:
-    image: mustafa3li/project:latest
-    container_name: django_app
+  redis:
+    image: redis:7.0
+    container_name: redis
+
+  celery:
+    container_name: celery
+    build: .
+    command: celery -A TaskManager worker -l INFO
     restart: always
-    pull_policy: always
     depends_on:
-      - db
-    environment:
-      DATABASE_HOST: db
-      DATABASE_PORT: ${DB_PORT}
-      DATABASE_NAME: ${DB_NAME}
-      DATABASE_USER: ${DB_USER}
-      DATABASE_PASSWORD: ${DB_PASSWORD}
-      SECRET_KEY: ${SECRET_KEY}
-      DEBUG: ${DEBUG}
-      ALLOWED_HOSTS: ${ALLOWED_HOSTS}
-    ports:
-      - "5000:5000"
-    entrypoint: /bin/bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:5000"
-
-volumes:
-  mysql_data:
+      - redis
+      - djangoserver
+    volumes:
+      - .:/app
+      - ./db.sqlite3:/app/db.sqlite3 # Mount the database file to the container

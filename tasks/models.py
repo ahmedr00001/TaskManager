@@ -26,6 +26,8 @@ class Task(models.Model):
     created_at = models.DateTimeField(auto_now_add=True) #auto set local time
     deadline = models.DateTimeField(default=now)  # ✅ Set default to current time
     category = models.CharField(max_length=100, blank=False, null=False) #will used on distribute tasks on users
+    deadline_reached = models.BooleanField(default=False)  # for celery to check task status
+
     
 
 def __str__(self):

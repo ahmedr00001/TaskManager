@@ -134,3 +134,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # media active
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # path of your static file
 MEDIA_URL = '/media/'  # then go to url of project to continue
+
+
+#celery + DOCKER
+CELERY_RESULT_BACKEND = 'redis://redis:6379'
+CELERY_BROKER_URL = 'redis://redis:6379'
+# CELERY_TIMEZONE = 'UTC'
+
+# #Schedule the task to run periodically using Celery
+# from celery.schedules import crontab
+# CELERY_BEAT_SCHEDULE = {
+#     'check-deadlines-every-minute': {
+#         'task': 'tasks.tasks.check_deadlines',
+#         'schedule': crontab(minute='*/1'),  # Run every minute
+#     },
+# }

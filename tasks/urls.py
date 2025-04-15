@@ -11,6 +11,4 @@ urlpatterns = [
     path('update/<int:task_id>/', views.update_task_status, name='update_task_status'),
     path('delete/<int:task_id>/', views.delete_task, name='delete_task'),
     path("logout/", views.log_out, name="log_out"),
-    path('tasks/<str:filter_type>/', views.task_list, name='task_list'), 
-    path('tasks/', views.task_list, name='task_list'),
 ]

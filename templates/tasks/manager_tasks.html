@@ -218,6 +218,24 @@
                 });
             }
 
+            // Function to confirm task deletion
+            function confirmDeleteTask(taskId) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById(`deleteForm-${taskId}`).submit();
+                    }
+                });
+            }
+
             // Initialize on page load
             window.onload = function() {
                 initializeCountdowns();

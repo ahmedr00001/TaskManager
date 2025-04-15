@@ -2,9 +2,14 @@ from django.shortcuts import render, redirect
 from django.contrib import messages  # For system messages
 from .models import User
 from django.contrib.auth.hashers import check_password, make_password  # For password hashing
+import time 
+from .tasks import sent_emails
 
 
 def login(request):
+
+    # sent_emails.delay()
+    
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -30,7 +35,6 @@ def login(request):
             messages.error(request, 'User not found')  
 
         return render(request, 'users/login.html')  # Reload the login page with error messages
-
     return render(request, 'users/login.html')
 
 
