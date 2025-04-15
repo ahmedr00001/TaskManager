@@ -1,7 +1,9 @@
 services:
   djangoserver:
     container_name: backend
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.celery # Use Dockerfile.celery for this service
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
@@ -15,7 +17,9 @@ services:
 
   celery:
     container_name: celery
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.celery # Use Dockerfile.celery for this service
     command: celery -A TaskManager worker -l INFO
     restart: always
     depends_on:

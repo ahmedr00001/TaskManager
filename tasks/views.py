@@ -139,7 +139,7 @@ def log_out(request):
 # this function used in get employees in manger page and thier tasks
 def manager_tasks(request):
 
-    check_deadlines.delay()
+    # check_deadlines.delay()
     
     # Check if the user is a manager; if not, redirect to the login page
     if request.session.get('user_role') != 'manager':
