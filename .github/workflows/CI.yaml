@@ -113,13 +113,13 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build --no-cache -t mustafa3li/project:${{ env.NEW_VERSION }} .
+          docker build --no-cache -t mustafa3li/distritask:${{ env.NEW_VERSION }} .
 
       - name: Tag Docker image as latest
         run: |
-          docker tag mustafa3li/project:${{ env.NEW_VERSION }} mustafa3li/project:latest
+          docker tag mustafa3li/distritask:${{ env.NEW_VERSION }} mustafa3li/distritask:latest
 
       - name: Push Docker image with both tags
         run: |
-          docker push mustafa3li/project:${{ env.NEW_VERSION }}
-          docker push mustafa3li/project:latest
+          docker push mustafa3li/distritask:${{ env.NEW_VERSION }}
+          docker push mustafa3li/distritask:latest
