@@ -36,13 +36,13 @@
 
     - name: Pull Docker image from DockerHub
       docker_image:
-        name: mustafa3li/project:latest
+        name: mustafa3li/distritask:latest
         source: pull
 
     - name: Run Docker container
       community.general.docker_container:
         name: taskmanger_container
-        image: mustafa3li/project:latest
+        image: mustafa3li/distritask:latest
         state: started
         ports:
           - "8000:8000"
