@@ -81,3 +81,25 @@ def register(request):
     return render(request, 'users/register.html')
 
 
+def change_password(request):
+    if request.method == "POST":
+        user_id = request.session.get('user_id')  
+        old_password = request.POST['old_password']
+        new_password = request.POST['new_password']
+        confirm_password = request.POST['confirm_password']
+
+        user = User.objects.get(id=user_id)
+
+        if not check_password(old_password, user.password):
+            messages.error(request, "Old password is incorrect.")
+        elif new_password != confirm_password:
+            messages.error(request, "New passwords do not match.")
+        else:
+            user.password = make_password(new_password)
+            user.save()
+            messages.success(request, "Password updated successfully!")
+            return redirect('users:login')  # or any page you want
+
+    return render(request, 'users/change_password.html')
+
+

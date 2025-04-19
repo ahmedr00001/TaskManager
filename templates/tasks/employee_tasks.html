@@ -55,6 +55,11 @@
                     <li><a href="#" onclick="filterTasks('completed')"><i class="fas fa-check-circle"></i> Completed Tasks</a></li>
                     <li><a href="#" onclick="filterTasks('delayed')"><i class="fas fa-exclamation-triangle"></i> Delayed Tasks</a></li>
                 </ul>
+
+                 <!-- user change passeod -->
+                 <li><a href="{% url 'users:change_password' %}" class="logout-btn" >Change Password</a></li>
+ 
+
                 <a href="#" class="logout-btn" onclick="logout()" style="text-decoration: none;">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
