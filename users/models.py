@@ -16,6 +16,8 @@ class User(models.Model):
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='employee')  
     password = models.CharField(max_length=255, blank=False ,null=True)
     category = models.CharField(max_length=100, blank=True, null=True)
+    reset_otp = models.CharField(max_length=6, null=True, blank=True)
+    otp_expiry = models.DateTimeField(null=True, blank=True)
 
 
     def __str__(self):

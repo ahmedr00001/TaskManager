@@ -63,6 +63,11 @@
                 <li><a href="#" onclick="filterTasks('Pending')"><i class="fas fa-cogs"></i> Pending</a></li>
             </ul>
             <button class="add-task-btn" onclick="showTaskForm()"><i class="fas fa-plus"></i> Add Task</button>
+
+             <!-- user change passeod -->
+             <li><a href="{% url 'users:change_password' %}" class="logout-btn" >Change Password</a></li>
+
+             
             <a href="#" class="logout-btn" onclick="logout()" style="text-decoration: none;">
                 <i class="fas fa-sign-out-alt"></i> Logout
             </a>
