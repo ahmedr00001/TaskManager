@@ -1,14 +1,19 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages  # For system messages
+
+from django.core.mail import send_mail #sent mail with otp
+from django.utils import timezone
+import random
+from django.contrib.auth.hashers import make_password
+
 from .models import User
 from django.contrib.auth.hashers import check_password, make_password  # For password hashing
 import time 
-from .tasks import sent_emails
 
 
 def login(request):
 
-    # sent_emails.delay()
+
     
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -103,3 +108,70 @@ def change_password(request):
     return render(request, 'users/change_password.html')
 
 
+
+
+def send_otp(request):
+    if request.method == "POST":
+        email = request.POST['email']
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            messages.error(request, "Email not found.")
+            return redirect('users:send_otp')
+
+        otp = str(random.randint(100000, 999999))
+        user.reset_otp = otp
+        user.otp_expiry = timezone.now() + timezone.timedelta(minutes=10)
+        user.save()
+
+        send_mail(
+            subject='Your OTP Code',
+            message = f"🎉 Ding Ding! You've got an OTP! 🎉\nYour OTP code is: {otp}\nI spent over two weeks writing the code to send this, so please... don't ignore it (⊙_⊙)\nUse it before it disappears like my free time☕",
+            from_email='ahmed.h.ramadan.cs@email.com',
+            recipient_list=[email],
+        )
+        messages.success(request, 'OTP sent to your email.')
+        return redirect('users:verify_otp')
+    
+    return render(request, 'users/send_otp.html')
+
+
+def verify_otp(request):
+    if request.method == "POST":
+        email = request.POST['email']
+        otp = request.POST['otp']
+        try:
+            user = User.objects.get(email=email, reset_otp=otp)
+            if user.otp_expiry < timezone.now():
+                messages.error(request, 'OTP expired.')
+                return redirect('users:send_otp')
+            request.session['reset_user_id'] = user.id
+            return redirect('users:reset_password')
+        except User.DoesNotExist:
+            messages.error(request, 'Invalid OTP.')
+    
+    return render(request, 'users/verify_otp.html')
+
+
+
+def reset_password(request):
+    user_id = request.session.get('reset_user_id')
+    if not user_id:
+        return redirect('users:send_otp')
+
+    if request.method == "POST":
+        new_password = request.POST['new_password']
+        confirm = request.POST['confirm_password']
+        if new_password != confirm:
+            messages.error(request, 'Passwords do not match.')
+            return redirect('reset_password')
+
+        user = User.objects.get(id=user_id)
+        user.password = make_password(new_password)
+        user.reset_otp = None
+        user.otp_expiry = None
+        user.save()
+        messages.success(request, 'Password reset successful.')
+        return redirect('users:login')
+
+    return render(request, 'users/reset_password.html')
