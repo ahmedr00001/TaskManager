@@ -6,10 +6,36 @@ from datetime import datetime
 from django.db.models import Count
 from django.db.models import Q  
 
+from django.core.mail import send_mail
 
 from celery import shared_task
 from .tasks import check_deadlines
 
+#function to send emails to employees of  new tasks 
+def send_task_email(employee, task):
+    subject = " New Task Assigned to You!"
+    message = f"""
+Hey {employee.first_name}, 
+
+You've been assigned a new task!
+
+ Title: {task.title}
+ Description: {task.description}
+ Priority: {task.priority}
+ Deadline: {task.deadline}
+ Category: {task.category}
+
+Please log in to your dashboard to view more details and start working on it.
+
+Distritask - Let the right task find the right talent."""
+
+    send_mail(
+        subject=subject,
+        message=message,
+        from_email='ahmed.h.ramadan.cs@email.com',
+        recipient_list=[employee.email],
+        fail_silently=True
+    )
 
 # View tasks of the logged-in employee
 def employee_tasks(request):
@@ -52,7 +78,7 @@ def add_task(request):
             return redirect('tasks:manager_tasks')
 
         # Create the task and assign it to the employee
-        Task.objects.create(
+        task=Task.objects.create(
             title=title,
             description=description,
             priority=priority,
@@ -61,6 +87,10 @@ def add_task(request):
             assigned_to=suitable_employee
         )
         messages.success(request, "Task added successfully.")
+        
+        # Send task assignment email
+        send_task_email(suitable_employee, task)
+
         return redirect('tasks:manager_tasks')
 
     return redirect('tasks:manager_tasks')
