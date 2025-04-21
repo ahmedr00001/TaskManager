@@ -81,7 +81,9 @@ WSGI_APPLICATION = 'TaskManager.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-#for local mysql
+
+# FOR LOCAL DATABASE
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
@@ -94,7 +96,9 @@ WSGI_APPLICATION = 'TaskManager.wsgi.application'
 # }
 
 
-#defult
+# FOR DEFAULT DATABASE
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -102,7 +106,9 @@ DATABASES = {
     }
 }
 
-#for docker 
+
+# FOR DOCKER DATABASE
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
