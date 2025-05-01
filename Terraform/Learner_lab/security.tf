@@ -11,6 +11,14 @@ resource "aws_security_group" "allow_ssh" {
   }
 
   ingress {
+    description = "DATABASE from anywhere"
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
     description = "HTTP from anywhere"
     from_port   = 80
     to_port     = 80
@@ -19,7 +27,7 @@ resource "aws_security_group" "allow_ssh" {
   }
 
   ingress {
-    description = "HTTP from anywhere"
+    description = "HTTPs from anywhere"
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
@@ -34,13 +42,13 @@ resource "aws_security_group" "allow_ssh" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress {
-    description = "HTTP from anywhere"
-    from_port   = 5000
-    to_port     = 5000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  # ingress {
+  #   description = "HTTP from anywhere"
+  #   from_port   = 5000
+  #   to_port     = 5000
+  #   protocol    = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
 
   egress {
     from_port   = 0

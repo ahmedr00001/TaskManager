@@ -5,6 +5,7 @@ services:
     container_name: mysql_db
     restart: always
     environment:
+<<<<<<< HEAD
       MYSQL_DATABASE: task_db
       MYSQL_USER: user
       MYSQL_PASSWORD: pass
@@ -15,25 +16,48 @@ services:
       - db_data:/var/lib/mysql
 
 
+=======
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    env_file:
+      - .env
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+>>>>>>> friend/main
 
   redis:
     image: redis:7.0
     container_name: redis
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> friend/main
   djangoserver:
     container_name: backend
     build:
       context: .
       dockerfile: Dockerfile.distritask
     command: sh -c "sleep 15  && python3 manage.py runserver 0.0.0.0:8000"
+<<<<<<< HEAD
 
+=======
+>>>>>>> friend/main
     ports:
       - "8000:8000"
     volumes:
       - .:/app
     depends_on:
       - db
+<<<<<<< HEAD
+=======
+    env_file:
+      - .env
+>>>>>>> friend/main
 
   celery:
     container_name: celery
@@ -50,6 +74,9 @@ services:
 
 volumes:
   db_data:
+<<<<<<< HEAD
 
 
   
+=======
+>>>>>>> friend/main
