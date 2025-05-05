@@ -1,20 +1,4 @@
 services:
-  db:
-    env_file:
-      - .env
-    image: mysql:8.0
-    container_name: mysql_db
-    restart: always
-    environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    ports:
-      - "3306:3306"
-    volumes:
-      - db_data:/var/lib/mysql
-
   redis:
     image: redis:7.0
     container_name: redis
@@ -33,7 +17,7 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - db
+      - redis
 
   celery:
     env_file:
@@ -49,6 +33,3 @@ services:
       - djangoserver
     volumes:
       - .:/app
-
-volumes:
-  db_data:

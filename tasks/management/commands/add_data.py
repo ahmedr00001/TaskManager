@@ -30,7 +30,7 @@ class Command(BaseCommand):
             {
                 'first_name': 'Mustafa',
                 'last_name': 'Ali',
-                'email': 'mustafa09402@gmial.com',
+                'email': 'mustafa09402@gmail.com',
                 'password': '12345',
                 'role': 'employee',
                 'category': 'DevOps',
@@ -132,12 +132,12 @@ class Command(BaseCommand):
             {
                 'title': 'Set Up CI/CD Pipeline',
                 'description': 'Create GitHub Actions to auto deploy backend on commit.',
-                'assigned_to': user_objects['mustafa09402@gmial.com'],
+                'assigned_to': user_objects['mustafa09402@gmail.com'],
             },
             {
                 'title': 'Dockerize Django Project',
                 'description': 'Build and maintain Docker containers for dev and prod environments.',
-                'assigned_to': user_objects['mustafa09402@gmial.com'],
+                'assigned_to': user_objects['mustafa09402@gmail.com'],
             },
         ]
 
