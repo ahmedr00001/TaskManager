@@ -83,6 +83,17 @@ resource "aws_security_group" "private_sg" {
   }
 }
 
+resource "aws_security_group_rule" "private_to_private_mysql" {
+  type                     = "ingress"
+  from_port                = 3306
+  to_port                  = 3306
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.private_sg.id
+  source_security_group_id = aws_security_group.private_sg.id
+  description              = "Allow MySQL from other private instances"
+}
+
+
 
 
 resource "aws_security_group" "alb_sg" {
