@@ -36,6 +36,9 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'chat',
+    'channels',
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,6 +48,8 @@ INSTALLED_APPS = [
     'core',
     'users',
     'tasks',
+    
+    
 ]
 
 MIDDLEWARE = [
@@ -76,6 +81,19 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'TaskManager.wsgi.application'
+# Channels
+
+
+ASGI_APPLICATION = 'TaskManager.asgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    },
+}
+
+
+
 
 
 # Database
@@ -211,3 +229,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'ahmed.h.ramadan.cs@gmail.com'
 EMAIL_HOST_PASSWORD = 'ymkywffxlhtvvqop'  # بدون مسافات
+LOGIN_URL = '/users/login/'
+AUTH_USER_MODEL = 'users.User'
+
