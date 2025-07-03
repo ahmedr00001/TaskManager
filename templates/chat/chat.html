@@ -400,6 +400,8 @@
                 overflow-x: auto;
                 overflow-y: hidden;
                 gap: 8px;
+                position: static;
+                background: linear-gradient(135deg, #f8f9fa 60%, #e0eafc 100%);
             }
             .chat-sidebar .user {
                 min-width: 120px;
@@ -431,42 +433,33 @@
                 border-radius: 0;
             }
             .chat-sidebar {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 80vw;
-                max-width: 320px;
-                height: 100vh;
-                min-height: 100vh;
-                background: linear-gradient(135deg, #f8f9fa 60%, #e0eafc 100%);
-                box-shadow: 2px 0 24px rgba(52,152,219,0.18);
-                border-radius: 0 18px 18px 0;
-                transform: translateX(-100%);
-                transition: transform 0.3s cubic-bezier(.4,2,.6,1);
-                z-index: 100;
-                display: block;
-                overflow-y: auto;
+                width: 100vw;
+                max-width: 100vw;
+                height: auto;
+                min-height: 120px;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 6px 2px 6px 2px;
+                display: flex;
+                flex-direction: column;
                 overflow-x: hidden;
-                padding: 24px 10px 24px 18px;
-                gap: 0;
+                overflow-y: auto;
+                gap: 4px;
+                position: static;
+                background: linear-gradient(135deg, #f8f9fa 60%, #e0eafc 100%);
             }
-            .chat-sidebar.open {
-                transform: translateX(0);
-            }
-            .sidebar-overlay {
-                display: none;
-                position: fixed;
-                top: 0; left: 0; right: 0; bottom: 0;
-                background: rgba(0,0,0,0.18);
-                z-index: 99;
-            }
-            .sidebar-overlay.active {
-                display: block;
+            .chat-sidebar .user {
+                min-width: auto;
+                width: 100%;
+                flex: 0 0 auto;
+                margin: 0 0 3px 0;
+                padding: 7px 4px;
+                font-size: 0.93rem;
             }
             .chat-container {
                 width: 100vw;
-                height: 100vh;
-                min-height: 100vh;
+                height: calc(100vh - 120px);
+                min-height: calc(100vh - 120px);
                 border-radius: 0;
                 box-shadow: none;
                 padding: 0;
@@ -487,57 +480,39 @@
                 font-size: 0.93rem;
             }
             .chat-input-area {
-                padding: 7px 2px;
-                gap: 4px;
+                padding: 8px 6px;
+                gap: 8px;
+                background: #fff;
+                border-top: 2px solid var(--border-color);
             }
             .chat-input {
-                padding: 6px 6px;
-                font-size: 0.93rem;
-                min-height: 28px;
+                padding: 10px 12px;
+                font-size: 1rem;
+                min-height: 40px;
+                border-radius: 20px;
+                border: 2px solid #e9ecef;
+                background: #f8f9fa;
+            }
+            .chat-input:focus {
+                border-color: var(--primary-color);
+                background: #fff;
+                box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
             }
             .send-btn {
-                padding: 0 10px;
-                font-size: 0.98rem;
-                min-width: 30px;
-                min-height: 30px;
+                padding: 0 16px;
+                font-size: 1.1rem;
+                min-width: 44px;
+                min-height: 44px;
+                border-radius: 22px;
+                background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+                box-shadow: 0 4px 12px rgba(52,152,219,0.2);
+            }
+            .send-btn:hover {
+                transform: scale(1.05);
+                box-shadow: 0 6px 16px rgba(52,152,219,0.3);
             }
             .back-btn {
-                top: 6px;
-                right: 6px;
-                padding: 4px 8px;
-                font-size: 0.9rem;
-            }
-            .hamburger {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                position: fixed;
-                top: 16px;
-                left: 16px;
-                background: #fff;
-                border: 2px solid var(--primary-color);
-                border-radius: 50%;
-                box-shadow: 0 4px 16px rgba(52,152,219,0.18);
-                padding: 10px;
-                width: 48px;
-                height: 48px;
-                z-index: 9999;
-                animation: hamburger-pop 0.5s cubic-bezier(.4,2,.6,1);
-            }
-            .hamburger:active {
-                background: var(--primary-color);
-                color: #fff;
-                transform: scale(0.95);
-            }
-            @keyframes hamburger-pop {
-                0% { transform: scale(0.7); opacity: 0; }
-                100% { transform: scale(1); opacity: 1; }
-            }
-            .chat-header {
-                justify-content: flex-start;
-            }
-            .back-btn {
-                margin-left: 60px;
+                margin-left: 0;
             }
         }
         
@@ -555,19 +530,22 @@
                 font-size: 0.89rem;
             }
             .chat-input-area {
-                padding: 4px 1px;
-                gap: 2px;
+                padding: 6px 4px;
+                gap: 6px;
+                background: #fff;
             }
             .chat-input {
-                padding: 4px 2px;
-                font-size: 0.89rem;
-                min-height: 22px;
+                padding: 8px 10px;
+                font-size: 0.95rem;
+                min-height: 36px;
+                border-radius: 18px;
             }
             .send-btn {
-                padding: 0 6px;
-                font-size: 0.92rem;
-                min-width: 24px;
-                min-height: 24px;
+                padding: 0 12px;
+                font-size: 1rem;
+                min-width: 36px;
+                min-height: 36px;
+                border-radius: 18px;
             }
             .back-btn {
                 top: 2px;
@@ -591,19 +569,22 @@
                 font-size: 0.85rem;
             }
             .chat-input-area {
-                padding: 2px 1px;
-                gap: 1px;
+                padding: 4px 2px;
+                gap: 4px;
+                background: #fff;
             }
             .chat-input {
-                padding: 2px 1px;
-                font-size: 0.85rem;
-                min-height: 18px;
+                padding: 6px 8px;
+                font-size: 0.9rem;
+                min-height: 32px;
+                border-radius: 16px;
             }
             .send-btn {
-                padding: 0 4px;
-                font-size: 0.85rem;
-                min-width: 18px;
-                min-height: 18px;
+                padding: 0 8px;
+                font-size: 0.9rem;
+                min-width: 32px;
+                min-height: 32px;
+                border-radius: 16px;
             }
             .back-btn {
                 top: 1px;
@@ -613,25 +594,10 @@
             }
         }
         
-        /* Hamburger styles */
-        .hamburger {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 2rem;
-            color: var(--primary-dark);
-            cursor: pointer;
-            margin-right: 12px;
-            z-index: 30;
-            transition: box-shadow 0.2s, background 0.2s, transform 0.2s;
-        }
+        .hamburger, .sidebar-overlay, .close-sidebar-btn { display: none !important; }
     </style>
 </head>
 <body>
-    <button class="hamburger" id="hamburger-btn" aria-label="Open sidebar">
-        <i class="fas fa-bars"></i>
-    </button>
-    <div class="sidebar-overlay" id="sidebar-overlay"></div>
     <script>
         window.userEmail = "{{ request.user.email|escapejs }}";
        // window.managerEmail = "{{ employee.email|escapejs }}";
@@ -951,30 +917,6 @@
                 console.warn('Chat not initialized due to missing roomName');
             }
             chatInput.focus();
-
-            // Hamburger menu logic for mobile
-            const hamburgerBtn = document.getElementById('hamburger-btn');
-            const chatSidebar = document.getElementById('chat-sidebar');
-            const sidebarOverlay = document.getElementById('sidebar-overlay');
-            if (hamburgerBtn && chatSidebar && sidebarOverlay) {
-                hamburgerBtn.addEventListener('click', function() {
-                    chatSidebar.classList.add('open');
-                    sidebarOverlay.classList.add('active');
-                });
-                sidebarOverlay.addEventListener('click', function() {
-                    chatSidebar.classList.remove('open');
-                    sidebarOverlay.classList.remove('active');
-                });
-                // Optional: close sidebar when a user is selected (on mobile)
-                users.forEach(user => {
-                    user.addEventListener('click', function() {
-                        if (window.innerWidth <= 600) {
-                            chatSidebar.classList.remove('open');
-                            sidebarOverlay.classList.remove('active');
-                        }
-                    });
-                });
-            }
         });
 
         function getCookie(name) {
